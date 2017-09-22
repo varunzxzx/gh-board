@@ -1,0 +1,13 @@
+---
+version: "2"
+services:
+  dev:
+    build: ./
+    image: gh-board
+    command: start
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/opt/gh-board/src
+      - ./style:/opt/gh-board/style
+      - ./test:/opt/gh-board/test
