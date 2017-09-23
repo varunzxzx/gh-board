@@ -6,7 +6,6 @@ import Client from '../../github-client';
 import NewVersionChecker from '../../new-version-checker';
 
 import Time from '../time';
-import GameModal from '../game-modal';
 import GithubFlavoredMarkdown from '../gfm';
 import SavedFiltersButton from './saved-filters';
 
@@ -34,14 +33,8 @@ const KarmaWarning = React.createClass({
   updateNewestVersion(newestVersion) {
     this.setState({newestVersion});
   },
-  showGameModal() {
-    this.setState({isGameOpen: true});
-  },
-  onHideGameModal() {
-    this.setState({isGameOpen: false});
-  },
   render() {
-    const {remaining, limit, reset, newestVersion, isGameOpen, isConnected} = this.state;
+    const {remaining, limit, reset, newestVersion, isConnected} = this.state;
     let karmaText;
     let resetText;
     if (reset) {
@@ -99,11 +92,9 @@ const KarmaWarning = React.createClass({
           {newestText}
         </BS.Nav>
         <BS.Nav pullRight>
-          <BS.NavItem className='nav-secret-game' onClick={this.showGameModal}><GiftIcon title='Oooh, a present!'/></BS.NavItem>
-          <BS.NavItem target='_blank' href='https://github.com/philschatz/gh-board'><MarkGithubIcon/> Source Code</BS.NavItem>
+          <BS.NavItem target='_blank' href='https://github.com/ryanprior/gh-board'><MarkGithubIcon/> Source Code</BS.NavItem>
           <SavedFiltersButton/>
         </BS.Nav>
-        <GameModal show={isGameOpen} onHide={this.onHideGameModal}/>
       </BS.Navbar>
     );
   }
