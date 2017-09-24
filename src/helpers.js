@@ -50,7 +50,7 @@ export function isLight(hexColor) {
 
 // Of the form `# - ...`
 export const KANBAN_LABEL = /^\d+\ -\ /;
-export const UNCATEGORIZED_NAME = '999 - Uncategorized';
+export const UNCATEGORIZED_NAME = '999 - Backlog';
 
 export function getCardColumn(card) {
   for (const label of card.issue.labels) {

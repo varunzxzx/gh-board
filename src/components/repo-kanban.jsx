@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import {ListUnorderedIcon} from 'react-octicons';
 
 import {getFilters} from '../route-utils';
+import {filterKanbanLabels} from '../lib/columns';
 import {UNCATEGORIZED_NAME} from '../helpers';
 import IssueStore from '../issue-store';
 import {filterCards} from '../issue-store';
@@ -15,21 +16,6 @@ import IssueList from './issue-list';
 import Issue from './issue';
 import Board from './board';
 import AnonymousModal from './anonymous-modal';
-
-
-const filterKanbanLabels = (labels, columnRegExp) => {
-  const kanbanLabels = _.filter(labels, (label) => columnRegExp.test(label.name));
-  // TODO: Handle more than 10 workflow states
-  return _.sortBy(kanbanLabels, ({name}) => {
-    if (name === UNCATEGORIZED_NAME) {
-      // make sure Uncategorized is the left-most column
-      return -1;
-    } else {
-      const result = /^(\d+)/.exec(name);
-      return result && result[1] || name;
-    }
-  });
-};
 
 
 const KanbanColumn = React.createClass({
@@ -86,7 +72,6 @@ const KanbanColumn = React.createClass({
 const KanbanRepo = React.createClass({
   render() {
     const {columnData, cards, repoInfos} = this.props;
-    const {columnRegExp} = getFilters().getState();
 
     // Get the primary repoOwner and repoName
     const [primaryRepo] = repoInfos;
@@ -99,12 +84,9 @@ const KanbanRepo = React.createClass({
       allLabels = columnData;
     }
 
-    const kanbanLabels = filterKanbanLabels(allLabels, columnRegExp);
-
+    const kanbanLabels = filterKanbanLabels(allLabels);
     let sortedCards = FilterStore.filterAndSort(cards);
-
     const isFilteringByColumn = false;
-
     const kanbanColumns = _.map(kanbanLabels, (label) => {
       // If we are filtering by a kanban column then only show that column
       // Otherwise show all columns
@@ -139,9 +121,6 @@ const KanbanRepo = React.createClass({
   }
 });
 
-
-let showedWarning = false;
-
 const RepoKanbanShell = React.createClass({
   componentWillMount() {
     // Needs to be called before `render()`
@@ -155,13 +134,7 @@ const RepoKanbanShell = React.createClass({
     // Get the "Primary" repo for milestones and labels
     const [{repoOwner, repoName}] = repoInfos;
 
-    // Alert the user once when they are viewing a repository that does not have any columns.
-    // That way they know why everything is "Uncategorized"
     const promise = IssueStore.fetchLabels(repoOwner, repoName).then((labels) => {
-      if (!showedWarning && filterKanbanLabels(labels, getFilters().getState().columnRegExp).length === 0) {
-        showedWarning = true;
-        alert('You are viewing a repository that does not have any properly formatted labels denoting columns so everything will show up as "Uncategorized". To create columns, rename your labels so they are "# - title" where # denotes the order of the column');
-      }
       return labels;
     });
     return (
