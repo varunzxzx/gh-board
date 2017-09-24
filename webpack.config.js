@@ -22,7 +22,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
-        exclude: [/node_modules/, /puzzle-script/, /octokat\.js/],
+        exclude: [/node_modules/, /octokat\.js/],
         query: {
           presets: ['react', 'es2017-node7']
         }
