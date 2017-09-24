@@ -4,10 +4,8 @@ import * as BS from 'react-bootstrap';
 import {DesktopDownloadIcon, PlusIcon} from 'react-octicons';
 
 import Client from '../github-client';
-import SettingsStore from '../settings-store';
 import IssueStore from '../issue-store';
 import {UNCATEGORIZED_NAME} from '../helpers';
-
 import ColoredIcon from './colored-icon';
 
 const MIN_CHILDREN_TO_SHOW = 10;
@@ -29,7 +27,6 @@ function collect(connect, monitor) {
     isOver: monitor.isOver()
   };
 }
-
 
 // Converts a table to a CSV string for downloading
 function toCSVString(table) {

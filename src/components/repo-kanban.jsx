@@ -16,6 +16,7 @@ import IssueList from './issue-list';
 import Issue from './issue';
 import Board from './board';
 import AnonymousModal from './anonymous-modal';
+import {titlecaps} from 'titlecaps';
 
 
 const KanbanColumn = React.createClass({
@@ -45,7 +46,7 @@ const KanbanColumn = React.createClass({
     }
     const title = (
       <Link className='label-title' to={getFilters().toggleColumnLabel(label.name).url()}>
-        {name}
+        {titlecaps(name)}
       </Link>
     );
 
