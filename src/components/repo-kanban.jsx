@@ -71,6 +71,11 @@ const KanbanColumn = React.createClass({
 });
 
 const KanbanRepo = React.createClass({
+  componentDidMount() {
+    const repoTitle = titlecaps(this.props.repoInfos[0].repoName);
+    document.title = `${repoTitle} Kanban Board`;
+  },
+
   render() {
     const {columnData, cards, repoInfos} = this.props;
 
