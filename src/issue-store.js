@@ -7,6 +7,7 @@ import {contains, KANBAN_LABEL, UNCATEGORIZED_NAME} from './helpers';
 import Card from './card-model';
 import Progress from './progress';
 import Database from './database';
+import fetchInitialData from './initial-data';
 
 const RELOAD_TIME_SHORT = 30 * 1000;
 const RELOAD_TIME_LONG = 10 * 60 * 1000;
@@ -153,7 +154,13 @@ const issueStore = new class IssueStore extends EventEmitter {
     return cardFactory(repoOwner, repoName, issue.number, issue);
   }
   // Fetch all the issues and then filter based on the URL
-  fetchIssues(progress) {
+  async fetchIssues(progress) {
+    const fetchedInitialData = window.localStorage.getItem('fetchedInitialData');
+    if (!fetchedInitialData) {
+      await fetchInitialData();
+      window.localStorage.setItem('fetchedInitialData', Date.now());
+    }
+
     const {repoInfos} = getFilters().getState();
     if (!progress) {
       // If no progress is passed in then just use a dummy progress

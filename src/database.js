@@ -169,6 +169,7 @@ const database = new class Database {
     return Dexie.delete(dbName);
   }
   resetDatabases() {
+    window.localStorage.removeItem('fetchedInitialData');
     return Promise.all(Object.keys(DB_DATA).map((dbName) => this._resetDatabase(dbName)));
   }
   getCard(repoOwner, repoName, number) {
@@ -251,7 +252,12 @@ const database = new class Database {
   }
   putCards(cards) {
     const batchOps = cards.map((card) => {
-      const {repoOwner, repoName, number} = card;
+      let {repoOwner, repoName, number} = card;
+
+      if (!number) {
+        number = card.issue.number
+      }
+
       const value = this.toCardValue(card);
       return {
         type: 'put',
