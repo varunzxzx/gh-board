@@ -255,7 +255,7 @@ const database = new class Database {
       let {repoOwner, repoName, number} = card;
 
       if (!number) {
-        number = card.issue.number
+        number = card.issue.number;
       }
 
       const value = this.toCardValue(card);
