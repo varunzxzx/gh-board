@@ -9,9 +9,7 @@ language: node_js
 #   - sh -e /etc/init.d/xvfb start
 
 script:
-  - npm run build
-  - $(npm bin)/http-server . &
-  - node ./script/fetch-issues.js
+  - script/build.sh
 
 # Remove /dist/ from .gitignore
 before_deploy:
