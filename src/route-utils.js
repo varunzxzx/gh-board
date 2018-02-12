@@ -138,6 +138,12 @@ export function parseRoute({params, routes, location}) {
 class FilterState {
   constructor(state) {
     this.state = state;
+    if (this.state.repoInfos.length === 0) {
+      this.state.repoInfos.push({
+        repoName: 'coala',
+        repoOwner: 'coala'
+      });
+    }
   }
   _chain(obj) {
     return new FilterState(_.defaults(obj, this.state));
