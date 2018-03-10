@@ -139,11 +139,20 @@ class FilterState {
   constructor(state) {
     this.state = state;
     if (this.state.repoInfos.length === 0) {
-      this.state.repoInfos.push({
-        repoName: 'coala',
-        repoOwner: 'coala'
-      });
+      const repositories = process.env.REPOSITORIES || 'coala';
+      const repoOwner = 'coala'; //default repoOwner
+
+      // extracting repo names
+      let repoNames = repositories.substring(repositories.indexOf(":") + 1).split("|");
+
+      let arr = [];
+      repoNames.forEach(repoName => {
+        arr.push({ repoOwner, repoName});
+      })
+
+      this.state.repoInfos = arr;
     }
+    console.log(this.state.repoInfos)
   }
   _chain(obj) {
     return new FilterState(_.defaults(obj, this.state));
